@@ -3,38 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SAHU AI Video Generator | Premium</title>
+<title>SAHU AI VIDEO GENERATOR</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-/* --- কালার ভেরিয়েবল --- */
+/* --- Global Variables --- */
 :root {
-  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --btn-gradient: linear-gradient(45deg, #FF512F 0%, #DD2476 100%);
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  --primary: #6366f1;
+  --secondary: #ec4899;
+  --accent: #8b5cf6;
   --text-main: #ffffff;
-  --text-muted: #cbd5e1;
+  --text-muted: #94a3b8;
+  --glass-bg: rgba(15, 23, 42, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --btn-gradient: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #0f172a;
+  font-family: 'Outfit', sans-serif;
+  background: #0f172a;
   color: var(--text-main);
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow-x: hidden;
+  overflow: hidden;
   position: relative;
 }
 
-/* --- ব্যাকগ্রাউন্ড এনিমেশন --- */
-.bg-blobs {
+/* --- Background Animation (Smoother) --- */
+.bg-wrapper {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
   overflow: hidden;
@@ -46,295 +48,395 @@ body {
   border-radius: 50%;
   filter: blur(80px);
   opacity: 0.6;
-  animation: float 10s infinite alternate;
+  animation: blob-bounce 15s infinite ease-in-out alternate;
 }
 
 .blob-1 {
   top: -10%; left: -10%; width: 500px; height: 500px;
-  background: #764ba2;
-  animation-duration: 12s;
+  background: var(--primary);
+  animation-duration: 20s;
 }
 
 .blob-2 {
   bottom: -10%; right: -10%; width: 400px; height: 400px;
-  background: #667eea;
-  animation-duration: 8s;
-  animation-delay: 2s;
+  background: var(--secondary);
+  animation-duration: 25s;
 }
 
 .blob-3 {
   top: 40%; left: 40%; width: 300px; height: 300px;
-  background: #ff0080;
+  background: var(--accent);
   opacity: 0.4;
-  animation: float 15s infinite alternate-reverse;
+  animation: blob-bounce 18s infinite reverse;
 }
 
-@keyframes float {
+@keyframes blob-bounce {
   0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(30px, 50px) scale(1.1); }
+  100% { transform: translate(30px, -30px) scale(1.1); }
 }
 
-/* --- মেইন কার্ড স্টাইল (Glassmorphism) --- */
-.wrapper {
-  width: 100%;
-  max-width: 500px;
-  padding: 20px;
+/* --- Main Glass Card --- */
+.container {
+  width: 90%;
+  max-width: 480px;
   position: relative;
   z-index: 10;
 }
 
-.card {
-  background: rgba(17, 25, 40, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
   border: 1px solid var(--glass-border);
   border-radius: 24px;
-  padding: 30px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  padding: 40px 30px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  text-align: center;
   transition: transform 0.3s ease;
 }
 
-.card:hover {
-  border-color: rgba(255, 255, 255, 0.2);
+/* --- Header --- */
+.logo-area {
+  margin-bottom: 25px;
 }
 
-/* --- হেডার সেকশন --- */
-.header { text-align: center; margin-bottom: 25px; }
-.header h1 {
+.logo-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #fff;
+  margin-bottom: 15px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+h1 {
   font-size: 28px;
   font-weight: 700;
-  background: linear-gradient(to right, #fff, #94a3b8);
+  margin-bottom: 8px;
+  background: linear-gradient(to right, #fff, #c4b5fd);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 5px;
-}
-.header p { font-size: 14px; color: var(--text-muted); }
-
-/* --- ইনফো ব্যাজ --- */
-.features {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 25px;
-  flex-wrap: wrap;
 }
 
-.badge {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 6px 12px;
-  border-radius: 50px;
-  font-size: 11px;
-  color: #a5b4fc;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  display: flex; align-items: center; gap: 5px;
+p {
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.6;
 }
 
-/* --- ইনপুট এরিয়া --- */
-.input-group { position: relative; margin-bottom: 20px; }
-
-input {
-  width: 100%;
-  padding: 16px;
-  padding-left: 45px; /* আইকনের জন্য জায়গা */
-  border-radius: 14px;
-  border: 1px solid var(--glass-border);
-  background: rgba(0, 0, 0, 0.3);
-  color: #fff;
-  font-size: 15px;
-  outline: none;
-  transition: all 0.3s;
+/* --- Input Area --- */
+.input-box {
+  margin: 30px 0;
+  position: relative;
+  text-align: left;
 }
 
-.input-icon {
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #c4b5fd;
+  margin-bottom: 10px;
+  margin-left: 5px;
+}
+
+.textarea-wrapper {
+  position: relative;
+}
+
+.textarea-wrapper i {
   position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #94a3b8;
+  top: 18px;
+  left: 18px;
+  color: #64748b;
+  transition: color 0.3s;
 }
 
-input:focus {
-  border-color: #8b5cf6;
-  background: rgba(0, 0, 0, 0.5);
-  box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+textarea {
+  width: 100%;
+  height: 100px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 15px 15px 15px 45px;
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  resize: none;
+  outline: none;
+  transition: all 0.3s ease;
 }
 
-/* --- বাটন স্টাইল --- */
-button {
+textarea:focus {
+  border-color: var(--primary);
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+textarea:focus + i {
+  color: var(--primary);
+}
+
+/* --- Main Button --- */
+.generate-btn {
   width: 100%;
   padding: 16px;
   background: var(--btn-gradient);
-  color: #fff;
   border: none;
   border-radius: 14px;
+  color: #fff;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 15px rgba(221, 36, 118, 0.4);
-  display: flex; justify-content: center; align-items: center; gap: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
 }
 
-button:hover {
+.generate-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(221, 36, 118, 0.6);
+  box-shadow: 0 15px 30px rgba(99, 102, 241, 0.4);
 }
 
-button:disabled {
-  background: #334155;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+.generate-btn:active {
+  transform: scale(0.98);
 }
 
-/* --- লোডিং এবং ভিডিও --- */
-.status {
+/* --- Loading Animation Area --- */
+.loading-area {
+  display: none;
+  margin-top: 30px;
   text-align: center;
-  margin-top: 15px;
+}
+
+.loader-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--primary);
+  border-right-color: var(--secondary);
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+.loading-text {
   font-size: 14px;
   color: var(--text-muted);
-  min-height: 20px;
+  animation: pulse 1.5s infinite;
 }
 
-.video-container {
-  margin-top: 20px;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  display: none; /* ডিফল্ট হাইড */
-  animation: fadeIn 0.5s ease;
-}
+@keyframes spin { 100% { transform: rotate(360deg); } }
+@keyframes pulse { 50% { opacity: 0.5; } }
 
-video { width: 100%; display: block; }
-
-.download-btn {
+/* --- Result Options (Hidden by default) --- */
+.result-options {
   display: none;
-  margin-top: 15px;
-  text-align: center;
-  padding: 12px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #38bdf8;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 14px;
-  border: 1px solid rgba(56, 189, 248, 0.3);
-  transition: background 0.3s;
+  margin-top: 30px;
+  animation: slideUp 0.5s ease;
 }
 
-.download-btn:hover { background: rgba(56, 189, 248, 0.1); }
+.success-message {
+  color: #4ade80;
+  font-size: 14px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
 
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.action-buttons {
+  display: flex;
+  gap: 15px;
+}
 
-/* --- ফুটার --- */
+.action-btn {
+  flex: 1;
+  text-decoration: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-watch {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-watch:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-download {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.btn-download:hover {
+  background: rgba(16, 185, 129, 0.3);
+  transform: translateY(-2px);
+}
+
+/* --- Footer --- */
 .footer {
-  text-align: center;
-  margin-top: 25px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
   font-size: 12px;
   color: #64748b;
-  border-top: 1px solid rgba(255,255,255,0.05);
-  padding-top: 15px;
 }
 
-.footer b { color: #a5b4fc; }
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  .glass-card { padding: 30px 20px; }
+  .action-buttons { flex-direction: column; }
+}
 </style>
 </head>
 <body>
 
-<div class="bg-blobs">
+<div class="bg-wrapper">
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
   <div class="blob blob-3"></div>
 </div>
 
-<div class="wrapper">
-  <div class="card">
-
-    <div class="header">
-      <h1><i class="fa-solid fa-wand-magic-sparkles"></i> SAHU AI Video</h1>
-      <p>Transform your imagination into reality</p>
+<div class="container">
+  <div class="glass-card">
+    
+    <div class="logo-area">
+      <div class="logo-icon">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+      </div>
+      <h1>SAHU AI VIDEO GENERATOR</h1>
+      <p>Create cinematic videos from text in seconds</p>
     </div>
 
-    <div class="features">
-      <div class="badge"><i class="fa-solid fa-bolt"></i> Fast Render</div>
-      <div class="badge"><i class="fa-solid fa-video"></i> HD Quality</div>
-      <div class="badge"><i class="fa-solid fa-robot"></i> Advanced AI</div>
+    <div class="input-box">
+      <label>Describe your imagination</label>
+      <div class="textarea-wrapper">
+        <textarea id="prompt" placeholder="E.g., A cyberpunk street in rain with neon lights..."></textarea>
+        <i class="fa-regular fa-keyboard"></i>
+      </div>
     </div>
 
-    <div class="input-group">
-      <i class="fa-solid fa-keyboard input-icon"></i>
-      <input id="prompt" placeholder="Describe your video (e.g., A futuristic cyberpunk city)" />
-    </div>
-
-    <button id="btn">
-      <i class="fa-solid fa-play"></i> Generate Video
+    <button id="generateBtn" class="generate-btn">
+      <i class="fa-solid fa-clapperboard"></i> Generate Video
     </button>
 
-    <div class="status" id="status"></div>
-
-    <div class="video-container" id="video-box">
-      <video id="video" controls></video>
+    <div id="loadingArea" class="loading-area">
+      <div class="loader-spinner"></div>
+      <p class="loading-text" id="loadingText">Analyzing your prompt...</p>
     </div>
-    
-    <a id="download" class="download-btn" download>
-      <i class="fa-solid fa-download"></i> Download Video
-    </a>
+
+    <div id="resultArea" class="result-options">
+      <div class="success-message">
+        <i class="fa-solid fa-circle-check"></i> Video Generated Successfully!
+      </div>
+      
+      <div class="action-buttons">
+        <a id="watchLink" href="#" target="_blank" class="action-btn btn-watch">
+          <i class="fa-solid fa-play"></i> Watch Online
+        </a>
+        
+        <a id="downloadLink" href="#" target="_blank" class="action-btn btn-download">
+          <i class="fa-solid fa-cloud-arrow-down"></i> Download
+        </a>
+      </div>
+    </div>
 
     <div class="footer">
-      &copy; 2025 • Powered by <b>SHAHADAT SAHU API</b><br>
-      All rights reserved.
+      © 2025 • Powered by <b>SHAHADAT SAHU</b>
     </div>
 
   </div>
 </div>
 
 <script>
-const btn = document.getElementById("btn");
-const prompt = document.getElementById("prompt");
-const status = document.getElementById("status");
-const videoBox = document.getElementById("video-box");
-const video = document.getElementById("video");
-const download = document.getElementById("download");
+const generateBtn = document.getElementById('generateBtn');
+const promptInput = document.getElementById('prompt');
+const loadingArea = document.getElementById('loadingArea');
+const resultArea = document.getElementById('resultArea');
+const loadingText = document.getElementById('loadingText');
+const watchLink = document.getElementById('watchLink');
+const downloadLink = document.getElementById('downloadLink');
 
-btn.onclick = async () => {
-  const text = prompt.value.trim();
-  if(!text) {
-    status.innerHTML = "<span style='color:#ef4444'>⚠️ Please enter a prompt first!</span>";
+// Demo Video URL (এটাকে আপনার আসল API লিংক দিয়ে রিপ্লেস করবেন)
+const demoVideoUrl = "https://assets.mixkit.co/videos/preview/mixkit-futuristic-robot-walking-in-a-city-1080.mp4";
+
+generateBtn.addEventListener('click', () => {
+  const text = promptInput.value.trim();
+  
+  if (!text) {
+    promptInput.style.borderColor = '#ef4444';
+    setTimeout(() => promptInput.style.borderColor = 'rgba(255, 255, 255, 0.1)', 1000);
     return;
   }
 
-  // রিসেট এবং লোডিং স্টেট
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Generating...';
-  status.innerHTML = "Creating your masterpiece... (This may take a moment)";
-  videoBox.style.display = "none";
-  download.style.display = "none";
+  // 1. UI Reset & Start Loading
+  generateBtn.style.display = 'none'; // বাটন লুকিয়ে ফেলব
+  resultArea.style.display = 'none'; // আগের রেজাল্ট লুকাবো
+  loadingArea.style.display = 'block'; // লোডিং দেখাবো
 
-  try {
-    // এখানে আপনার API কলটি হবে
-    const r = await fetch("/animate?prompt=" + encodeURIComponent(text));
-    const d = await r.json();
-    
-    if(!d.success) throw new Error("API Failed");
+  // 2. Loading Steps Simulation
+  const steps = [
+    "Connecting to AI Server...",
+    "Generating Scenes...",
+    "Rendering High Quality...",
+    "Finalizing Video..."
+  ];
 
-    // সফল হলে
-    video.src = d.video;
-    download.href = d.video;
+  let stepCount = 0;
+  const interval = setInterval(() => {
+    if(stepCount < steps.length) {
+      loadingText.innerText = steps[stepCount];
+      stepCount++;
+    }
+  }, 800);
+
+  // 3. API Call Simulation (3.5 seconds delay)
+  setTimeout(() => {
+    clearInterval(interval);
     
-    videoBox.style.display = "block";
-    download.style.display = "block";
-    status.innerHTML = "<span style='color:#4ade80'>✨ Video Generated Successfully!</span>";
+    // লোডিং শেষ
+    loadingArea.style.display = 'none';
     
-    btn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Generate Another';
-  } catch(e) {
-    // এরর হ্যান্ডলিং
-    status.innerHTML = "<span style='color:#ef4444'>❌ Failed to generate. Try again later.</span>";
-    btn.innerHTML = '<i class="fa-solid fa-play"></i> Generate Video';
-  }
-  
-  btn.disabled = false;
-}
+    // রেজাল্ট দেখানো
+    resultArea.style.display = 'block';
+    
+    // বাটন আবার ফিরিয়ে আনা (নতুন করে জেনারেট করার জন্য)
+    generateBtn.style.display = 'flex';
+    generateBtn.innerHTML = '<i class="fa-solid fa-rotate"></i> Create Another';
+    
+    // লিংক সেট করা (এখানে ডাইনামিক লিংক বসবে)
+    watchLink.href = demoVideoUrl;
+    downloadLink.href = demoVideoUrl; // বা ডাউনলোডের জন্য আলাদা লিংক থাকলে সেটা দিবেন
+
+  }, 3500); // ৩.৫ সেকেন্ড সময় নিবে
+});
 </script>
 
 </body>

@@ -1,207 +1,355 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SAHU AI VIDEO GENERATOR</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAHU AI Video Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- Global Variables --- */
+        :root {
+            --primary: #6366f1;
+            --secondary: #ec4899;
+            --accent: #8b5cf6;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(15, 23, 42, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --btn-gradient: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+        }
 
-<style>
-body{
-  font-family:Outfit,sans-serif;
-  background:#0f172a;
-  color:#fff;
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center
-}
-.card{
-  width:95%;
-  max-width:500px;
-  background:rgba(15,23,42,.75);
-  border-radius:22px;
-  padding:30px;
-  border:1px solid rgba(255,255,255,.1)
-}
-h1{text-align:center;margin-bottom:8px}
-p{text-align:center;color:#94a3b8;font-size:14px}
-textarea{
-  width:100%;
-  height:120px;
-  margin-top:20px;
-  padding:15px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.15);
-  background:#020617;
-  color:#fff;
-  font-size:15px;
-  resize:none
-}
-button{
-  width:100%;
-  margin-top:18px;
-  padding:15px;
-  border:none;
-  border-radius:14px;
-  background:linear-gradient(135deg,#6366f1,#ec4899);
-  color:#fff;
-  font-size:16px;
-  font-weight:600;
-  cursor:pointer
-}
-.loading{
-  display:none;
-  margin-top:20px;
-  text-align:center;
-  color:#94a3b8
-}
-.result{
-  display:none;
-  margin-top:22px
-}
-.actions{
-  display:flex;
-  gap:12px
-}
-.actions a{
-  flex:1;
-  text-align:center;
-  padding:14px;
-  border-radius:12px;
-  text-decoration:none;
-  font-weight:600
-}
-.watch{background:rgba(255,255,255,.1);color:#fff}
-.download{background:rgba(16,185,129,.2);color:#34d399}
-.footer{
-  text-align:center;
-  margin-top:25px;
-  font-size:12px;
-  color:#64748b
-}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* ===== VIDEO OVERLAY PLAYER ===== */
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.85);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:999
-}
-.overlay video{
-  width:90%;
-  max-width:900px;
-  border-radius:16px;
-}
-.close{
-  position:absolute;
-  top:20px;
-  right:25px;
-  font-size:26px;
-  color:#fff;
-  cursor:pointer
-}
-</style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #0f172a;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto; /* Allow scrolling if needed on small screens */
+            position: relative;
+            padding: 20px 0; /* Added padding for mobile view */
+        }
+
+        /* --- Background Animation --- */
+        .bg-wrapper {
+            position: fixed; /* Fixed background */
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden; z-index: -1;
+        }
+        .blob {
+            position: absolute; border-radius: 50%;
+            filter: blur(80px); opacity: 0.6;
+            animation: blob-bounce 15s infinite ease-in-out alternate;
+        }
+        .blob-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: var(--primary); animation-duration: 20s; }
+        .blob-2 { bottom: -10%; right: -10%; width: 400px; height: 400px; background: var(--secondary); animation-duration: 25s; }
+        .blob-3 { top: 40%; left: 40%; width: 300px; height: 300px; background: var(--accent); opacity: 0.4; animation: blob-bounce 18s infinite reverse; }
+        
+        @keyframes blob-bounce {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, -30px) scale(1.1); }
+        }
+
+        /* --- Main Glass Card --- */
+        .container {
+            width: 90%; max-width: 480px;
+            position: relative; z-index: 10;
+            margin: auto;
+        }
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        /* --- Header --- */
+        .logo-area { margin-bottom: 25px; }
+        .logo-icon {
+            width: 60px; height: 60px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 18px;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 24px; color: #fff; margin-bottom: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        h1 {
+            font-size: 28px; font-weight: 700; margin-bottom: 8px;
+            background: linear-gradient(to right, #fff, #c4b5fd);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        p { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+
+        /* --- Input Area --- */
+        .input-box { margin: 30px 0; position: relative; text-align: left; }
+        label { display: block; font-size: 13px; font-weight: 600; color: #c4b5fd; margin-bottom: 10px; margin-left: 5px; }
+        .textarea-wrapper { position: relative; }
+        .textarea-wrapper i { position: absolute; top: 18px; left: 18px; color: #64748b; transition: color 0.3s; }
+        textarea {
+            width: 100%; height: 100px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 15px 15px 15px 45px;
+            color: #fff; font-family: 'Outfit', sans-serif; font-size: 15px;
+            resize: none; outline: none; transition: all 0.3s ease;
+        }
+        textarea:focus {
+            border-color: var(--primary); background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        textarea:focus + i { color: var(--primary); }
+
+        /* --- Main Button --- */
+        .generate-btn {
+            width: 100%; padding: 16px;
+            background: var(--btn-gradient);
+            border: none; border-radius: 14px;
+            color: #fff; font-size: 16px; font-weight: 600;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            gap: 10px; transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+        .generate-btn:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(99, 102, 241, 0.4); }
+        .generate-btn:active { transform: scale(0.98); }
+
+        /* --- Loading Animation Area --- */
+        .loading-area { display: none; margin-top: 30px; text-align: center; }
+        .loader-spinner {
+            width: 50px; height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            border-right-color: var(--secondary);
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        .loading-text { font-size: 14px; color: var(--text-muted); animation: pulse 1.5s infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 50% { opacity: 0.5; } }
+
+        /* --- Result Options (UPDATED) --- */
+        .result-options { display: none; margin-top: 30px; animation: slideUp 0.5s ease; }
+        .success-message {
+            color: #4ade80; font-size: 14px; margin-bottom: 20px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        
+        /* New Embedded Video Styles */
+        .video-wrapper {
+            margin: 20px 0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            background: #000;
+        }
+        #resultVideo {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .action-buttons { display: flex; gap: 15px; }
+        .action-btn {
+            flex: 1; text-decoration: none; padding: 14px;
+            border-radius: 12px; font-size: 14px; font-weight: 600;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: all 0.3s ease; cursor: pointer;
+        }
+        .btn-download { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .btn-download:hover { background: rgba(16, 185, 129, 0.3); transform: translateY(-2px); }
+
+        /* --- Footer --- */
+        .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.05); font-size: 12px; color: #64748b; }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Mobile Responsive */
+        @media (max-width: 480px) {
+            .glass-card { padding: 30px 20px; }
+        }
+    </style>
 </head>
 <body>
 
-<div class="card">
-  <h1>SAHU AI VIDEO GENERATOR</h1>
-  <p>Prompt লিখে AI ভিডিও বানান</p>
-
-  <textarea id="prompt" placeholder="Example: cinematic cyberpunk city at night..."></textarea>
-
-  <button id="generateBtn">
-    <i class="fa-solid fa-clapperboard"></i> Generate Video
-  </button>
-
-  <div class="loading" id="loading">
-    ⏳ Generating video, please wait...
-  </div>
-
-  <div class="result" id="result">
-    <p style="color:#4ade80;margin-bottom:15px;">
-      <i class="fa-solid fa-circle-check"></i> Video Generated Successfully
-    </p>
-    <div class="actions">
-      <a href="#" id="watchBtn" class="watch">
-        <i class="fa-solid fa-play"></i> Watch Online
-      </a>
-      <a href="#" id="downloadBtn" class="download" download>
-        <i class="fa-solid fa-download"></i> Download
-      </a>
+    <div class="bg-wrapper">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
     </div>
-  </div>
 
-  <div class="footer">© 2025 • SHAHADAT SAHU</div>
-</div>
+    <div class="container">
+        <div class="glass-card">
+            
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <h1>SAHU AI VIDEO GENERATOR</h1>
+                <p>Create cinematic videos from text in seconds</p>
+            </div>
 
-<!-- ===== VIDEO PLAYER OVERLAY ===== -->
-<div class="overlay" id="overlay">
-  <i class="fa-solid fa-xmark close" id="close"></i>
-  <video id="player" controls autoplay></video>
-</div>
+            <div class="input-box">
+                <label>Describe your imagination</label>
+                <div class="textarea-wrapper">
+                    <textarea id="prompt" placeholder="E.g., A cyberpunk street in rain with neon lights..."></textarea>
+                    <i class="fa-regular fa-keyboard"></i>
+                </div>
+            </div>
 
-<script>
-const btn=document.getElementById("generateBtn");
-const prompt=document.getElementById("prompt");
-const loading=document.getElementById("loading");
-const result=document.getElementById("result");
-const watchBtn=document.getElementById("watchBtn");
-const downloadBtn=document.getElementById("downloadBtn");
+            <button id="generateBtn" class="generate-btn">
+                <i class="fa-solid fa-clapperboard"></i> Generate Video
+            </button>
 
-const overlay=document.getElementById("overlay");
-const player=document.getElementById("player");
-const closeBtn=document.getElementById("close");
+            <div id="loadingArea" class="loading-area">
+                <div class="loader-spinner"></div>
+                <p class="loading-text" id="loadingText">Analyzing your prompt...</p>
+            </div>
 
-let currentVideo="";
+            <div id="resultArea" class="result-options">
+                <div class="success-message">
+                    <i class="fa-solid fa-circle-check"></i> Video Generated Successfully!
+                </div>
 
-btn.onclick=async()=>{
-  const text=prompt.value.trim();
-  if(!text) return alert("Prompt লিখুন");
+                <div class="video-wrapper">
+                    <video id="resultVideo" controls playsinline>
+                        <source src="" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
 
-  btn.style.display="none";
-  result.style.display="none";
-  loading.style.display="block";
+                <div class="action-buttons">
+                    <a id="downloadLink" href="#" class="action-btn btn-download">
+                        <i class="fa-solid fa-cloud-arrow-down"></i> Download Video
+                    </a>
+                </div>
+            </div>
 
-  try{
-    const res=await fetch("/animate?prompt="+encodeURIComponent(text));
-    const data=await res.json();
-    if(!data.success||!data.video) throw 0;
+            <div class="footer">
+                © 2025 • Powered by <b>SHAHADAT SAHU</b>
+            </div>
 
-    currentVideo=data.video;
+        </div>
+    </div>
 
-    loading.style.display="none";
-    result.style.display="block";
-    btn.style.display="block";
-    btn.innerHTML='<i class="fa-solid fa-rotate"></i> Generate Again';
 
-    downloadBtn.href=currentVideo;
-  }catch{
-    loading.style.display="none";
-    btn.style.display="block";
-    btn.innerHTML="Try Again";
-    alert("❌ Video generation failed");
-  }
-};
+    <script>
+        const generateBtn = document.getElementById('generateBtn');
+        const promptInput = document.getElementById('prompt');
+        const loadingArea = document.getElementById('loadingArea');
+        const resultArea = document.getElementById('resultArea');
+        const loadingText = document.getElementById('loadingText');
+        // New Video Element Reference
+        const resultVideo = document.getElementById('resultVideo');
+        const downloadLink = document.getElementById('downloadLink');
 
-watchBtn.onclick=(e)=>{
-  e.preventDefault();
-  player.src=currentVideo;
-  overlay.style.display="flex";
-};
 
-closeBtn.onclick=()=>{
-  player.pause();
-  player.src="";
-  overlay.style.display="none";
-};
-</script>
+        // DEMO VIDEO URL (Replace with your API result later)
+        const demoVideoUrl = "https://assets.mixkit.co/videos/preview/mixkit-futuristic-robot-walking-in-a-city-1080.mp4"; 
 
+        // --- Generate Button Logic ---
+        generateBtn.addEventListener('click', () => {
+            const text = promptInput.value.trim();
+            
+            if (!text) {
+                promptInput.style.borderColor = '#ef4444'; 
+                setTimeout(() => promptInput.style.borderColor = 'rgba(255, 255, 255, 0.1)', 1000);
+                return;
+            }
+
+            // UI Reset
+            generateBtn.style.display = 'none';
+            resultArea.style.display = 'none'; 
+            loadingArea.style.display = 'block';
+            // Reset video source so it doesn't play old video while loading
+            resultVideo.src = ""; 
+
+            // Loading Steps
+            const steps = ["Connecting to AI...", "Generating Scenes...", "Rendering Video...", "Finalizing..."];
+            let stepCount = 0;
+            
+            const interval = setInterval(() => {
+                if(stepCount < steps.length) {
+                    loadingText.innerText = steps[stepCount];
+                    stepCount++;
+                }
+            }, 800);
+
+            // Simulation End (3.5s)
+            setTimeout(() => {
+                clearInterval(interval);
+                loadingArea.style.display = 'none'; 
+                resultArea.style.display = 'block';
+                
+                // --- Set Video Source and Play ---
+                resultVideo.src = demoVideoUrl;
+                // Optional: Mute and autoplay so it starts immediately without sound issues
+                resultVideo.muted = true; 
+                resultVideo.play().catch(e => console.log("Autoplay prevented by browser"));
+
+                generateBtn.style.display = 'flex';
+                generateBtn.innerHTML = '<i class="fa-solid fa-rotate"></i> Create Another';
+            }, 3500);
+        });
+
+
+        // --- Download Logic (Auto Download to Storage) ---
+        downloadLink.addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            const originalText = downloadLink.innerHTML;
+            downloadLink.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Downloading...';
+            
+            try {
+                // Use the current source of the video player
+                const videoSource = resultVideo.src;
+                if (!videoSource) throw new Error("No video source found");
+
+                // Fetch video as blob
+                const response = await fetch(videoSource);
+                const blob = await response.blob();
+                
+                // Create temporary link
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = `SAHU_AI_${new Date().getTime()}.mp4`; // Filename
+                
+                document.body.appendChild(a);
+                a.click(); // Trigger download
+                
+                // Cleanup
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                downloadLink.innerHTML = '<i class="fa-solid fa-check"></i> Saved!';
+                setTimeout(() => {
+                    downloadLink.innerHTML = originalText;
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Download failed:', error);
+                // Fallback if fetch fails (e.g. CORS issues)
+                if(resultVideo.src) {
+                    window.open(resultVideo.src, '_blank'); 
+                }
+                downloadLink.innerHTML = originalText;
+                alert("Download failed due to server restrictions. Opening video in new tab.");
+            }
+        });
+    </script>
 </body>
 </html>

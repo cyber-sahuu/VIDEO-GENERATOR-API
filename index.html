@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAHU AI Video Generator | Premium</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+/* --- কালার ভেরিয়েবল --- */
+:root {
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --btn-gradient: linear-gradient(45deg, #FF512F 0%, #DD2476 100%);
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --text-main: #ffffff;
+  --text-muted: #cbd5e1;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #0f172a;
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* --- ব্যাকগ্রাউন্ড এনিমেশন --- */
+.bg-blobs {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.6;
+  animation: float 10s infinite alternate;
+}
+
+.blob-1 {
+  top: -10%; left: -10%; width: 500px; height: 500px;
+  background: #764ba2;
+  animation-duration: 12s;
+}
+
+.blob-2 {
+  bottom: -10%; right: -10%; width: 400px; height: 400px;
+  background: #667eea;
+  animation-duration: 8s;
+  animation-delay: 2s;
+}
+
+.blob-3 {
+  top: 40%; left: 40%; width: 300px; height: 300px;
+  background: #ff0080;
+  opacity: 0.4;
+  animation: float 15s infinite alternate-reverse;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(30px, 50px) scale(1.1); }
+}
+
+/* --- মেইন কার্ড স্টাইল (Glassmorphism) --- */
+.wrapper {
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  position: relative;
+  z-index: 10;
+}
+
+.card {
+  background: rgba(17, 25, 40, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 30px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* --- হেডার সেকশন --- */
+.header { text-align: center; margin-bottom: 25px; }
+.header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 5px;
+}
+.header p { font-size: 14px; color: var(--text-muted); }
+
+/* --- ইনফো ব্যাজ --- */
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-size: 11px;
+  color: #a5b4fc;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex; align-items: center; gap: 5px;
+}
+
+/* --- ইনপুট এরিয়া --- */
+.input-group { position: relative; margin-bottom: 20px; }
+
+input {
+  width: 100%;
+  padding: 16px;
+  padding-left: 45px; /* আইকনের জন্য জায়গা */
+  border-radius: 14px;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.input-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+input:focus {
+  border-color: #8b5cf6;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+}
+
+/* --- বাটন স্টাইল --- */
+button {
+  width: 100%;
+  padding: 16px;
+  background: var(--btn-gradient);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 15px rgba(221, 36, 118, 0.4);
+  display: flex; justify-content: center; align-items: center; gap: 10px;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(221, 36, 118, 0.6);
+}
+
+button:disabled {
+  background: #334155;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* --- লোডিং এবং ভিডিও --- */
+.status {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+  color: var(--text-muted);
+  min-height: 20px;
+}
+
+.video-container {
+  margin-top: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: none; /* ডিফল্ট হাইড */
+  animation: fadeIn 0.5s ease;
+}
+
+video { width: 100%; display: block; }
+
+.download-btn {
+  display: none;
+  margin-top: 15px;
+  text-align: center;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #38bdf8;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  transition: background 0.3s;
+}
+
+.download-btn:hover { background: rgba(56, 189, 248, 0.1); }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* --- ফুটার --- */
+.footer {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 12px;
+  color: #64748b;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding-top: 15px;
+}
+
+.footer b { color: #a5b4fc; }
+
+</style>
+</head>
+<body>
+
+<div class="bg-blobs">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<div class="wrapper">
+  <div class="card">
+
+    <div class="header">
+      <h1><i class="fa-solid fa-wand-magic-sparkles"></i> SAHU AI Video</h1>
+      <p>Transform your imagination into reality</p>
+    </div>
+
+    <div class="features">
+      <div class="badge"><i class="fa-solid fa-bolt"></i> Fast Render</div>
+      <div class="badge"><i class="fa-solid fa-video"></i> HD Quality</div>
+      <div class="badge"><i class="fa-solid fa-robot"></i> Advanced AI</div>
+    </div>
+
+    <div class="input-group">
+      <i class="fa-solid fa-keyboard input-icon"></i>
+      <input id="prompt" placeholder="Describe your video (e.g., A futuristic cyberpunk city)" />
+    </div>
+
+    <button id="btn">
+      <i class="fa-solid fa-play"></i> Generate Video
+    </button>
+
+    <div class="status" id="status"></div>
+
+    <div class="video-container" id="video-box">
+      <video id="video" controls></video>
+    </div>
+    
+    <a id="download" class="download-btn" download>
+      <i class="fa-solid fa-download"></i> Download Video
+    </a>
+
+    <div class="footer">
+      &copy; 2025 • Powered by <b>SHAHADAT SAHU API</b><br>
+      All rights reserved.
+    </div>
+
+  </div>
+</div>
+
+<script>
+const btn = document.getElementById("btn");
+const prompt = document.getElementById("prompt");
+const status = document.getElementById("status");
+const videoBox = document.getElementById("video-box");
+const video = document.getElementById("video");
+const download = document.getElementById("download");
+
+btn.onclick = async () => {
+  const text = prompt.value.trim();
+  if(!text) {
+    status.innerHTML = "<span style='color:#ef4444'>⚠️ Please enter a prompt first!</span>";
+    return;
+  }
+
+  // রিসেট এবং লোডিং স্টেট
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Generating...';
+  status.innerHTML = "Creating your masterpiece... (This may take a moment)";
+  videoBox.style.display = "none";
+  download.style.display = "none";
+
+  try {
+    // এখানে আপনার API কলটি হবে
+    const r = await fetch("/animate?prompt=" + encodeURIComponent(text));
+    const d = await r.json();
+    
+    if(!d.success) throw new Error("API Failed");
+
+    // সফল হলে
+    video.src = d.video;
+    download.href = d.video;
+    
+    videoBox.style.display = "block";
+    download.style.display = "block";
+    status.innerHTML = "<span style='color:#4ade80'>✨ Video Generated Successfully!</span>";
+    
+    btn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Generate Another';
+  } catch(e) {
+    // এরর হ্যান্ডলিং
+    status.innerHTML = "<span style='color:#ef4444'>❌ Failed to generate. Try again later.</span>";
+    btn.innerHTML = '<i class="fa-solid fa-play"></i> Generate Video';
+  }
+  
+  btn.disabled = false;
+}
+</script>
+
+</body>
+</html>
